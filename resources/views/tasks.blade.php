@@ -31,6 +31,18 @@
                         Completed
                     </span>
                 @endif
+                <form action="{{ route('tasks.complete', $task) }}" method="POST">
+                    @csrf
+                    @method('PATCH')
+
+                    <button
+                        type="submit"
+                        class="text-sm text-green-600 hover:underline"
+                    >
+                        Mark complete
+                    </button>
+                </form>
+
             </div>
         @empty
             <p class="text-gray-500 text-center">
