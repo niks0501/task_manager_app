@@ -6,3 +6,4 @@ Route::get('/', [App\Http\Controllers\TaskController::class, 'index'])->name('ta
 Route::get('/tasks/create', [App\Http\Controllers\TaskController::class, 'create'])->name('tasks.create');
 Route::post('/tasks', [App\Http\Controllers\TaskController::class, 'store'])->name('tasks.store');
 Route::patch('/tasks/{task}/complete', [App\Http\Controllers\TaskController::class, 'complete'])->name('tasks.complete');
+Route::delete('/tasks/{task}', [App\Http\Controllers\TaskController::class, 'destroy'])->name('tasks.delete');

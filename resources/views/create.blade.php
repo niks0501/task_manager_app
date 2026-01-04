@@ -1,6 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
+        <div class="flex mb-1">
+                <h1 class="text-2xl font-bold mb-4">Create New Task</h1>
+                <a href="{{ route('tasks.index') }}" 
+                   class="ml-auto bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
+                   Home
+                </a>
+        </div>
 
         <form action="{{ route('tasks.store') }}" method="POST" class="mb-6">
                 @csrf
