@@ -49,6 +49,17 @@
                             Mark complete
                         </button>
                     </form>
+                    <!-- Edit Button Form End -->
+                    <form action="{{ route('tasks.edit', $task) }}" method="POST">
+                        @csrf
+                        @method('GET')
+                        <button
+                            type="submit"
+                            class="text-sm text-blue-600 hover:underline cursor-pointer"
+                        >
+                            Edit
+                        </button>
+                    </form>
                     <!-- Delete Button Form -->
                     <form action="{{ route('tasks.delete', $task) }}" method="POST" onsubmit="return confirm('Are sure you want to delete this task?')">
                         @csrf

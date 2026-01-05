@@ -7,3 +7,5 @@ Route::get('/tasks/create', [App\Http\Controllers\TaskController::class, 'create
 Route::post('/tasks', [App\Http\Controllers\TaskController::class, 'store'])->name('tasks.store');
 Route::patch('/tasks/{task}/complete', [App\Http\Controllers\TaskController::class, 'complete'])->name('tasks.complete');
 Route::delete('/tasks/{task}', [App\Http\Controllers\TaskController::class, 'destroy'])->name('tasks.delete');
+Route::get('/tasks/edit/{task}', [App\Http\Controllers\TaskController::class, 'edit'])->name('tasks.edit');
+Route::patch('/tasks/{task}', [App\Http\Controllers\TaskController::class, 'update'])->name('tasks.update');
