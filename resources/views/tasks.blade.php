@@ -9,6 +9,29 @@
            Add Task
         </a>
     </div>
+    <div class="mb-4 flex gap-3">
+        <a
+            href="{{ route('tasks.index') }}"
+            class="{{ request('status') === null ? 'font-bold underline' : '' }}"
+        >
+            All
+        </a>
+
+        <a
+            href="{{ route('tasks.index', ['status' => 'pending']) }}"
+            class="{{ request('status') === 'pending' ? 'font-bold underline' : '' }}"
+        >
+            Pending
+        </a>
+
+        <a
+            href="{{ route('tasks.index', ['status' => 'completed']) }}"
+            class="{{ request('status') === 'completed' ? 'font-bold underline' : '' }}"
+        >
+            Completed
+        </a>
+    </div>
+
 
     @if (session('success'))
         <div class="mb-4 p-3 bg-green-100 text-green-700 rounded">

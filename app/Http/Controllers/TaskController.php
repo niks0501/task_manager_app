@@ -5,15 +5,25 @@ namespace App\Http\Controllers;
 use App\Models\Task;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
+use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $tasks = Task::latest()->get();
+        $query = Task::query();
+
+        match ($request->status) {
+            'completed' => $query->completed(),
+            'pending' => $query->pending(),
+            default => null,
+        };
+
+        $tasks = $query->latest()->paginate(5);
+
         return view('tasks', compact('tasks'));
     }
 

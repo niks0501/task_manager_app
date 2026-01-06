@@ -12,4 +12,14 @@ class Task extends Model
         'is_completed',
         'completed_at',
     ];
+
+    public function scopePending($query)
+    {
+        return $query->where('is_completed', false);
+    }
+
+    public function scopeCompleted($query)
+    {
+        return $query->where('is_completed', true);
+    }
 }
