@@ -33,9 +33,9 @@
     </div>
 
 
-    @if (session('success'))
-        <x-alert type="success" />
-    @endif
+    
+    <x-alert />
+    
 
 
 
