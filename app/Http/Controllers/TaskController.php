@@ -92,4 +92,17 @@ class TaskController extends Controller
         ]);
         return redirect()->route('tasks.index')->with('success', 'Task marked as completed.');
     }
+
+    public function restore($id)
+    {
+        $task = Task::onlyTrashed()->findOrFail($id);
+        $task->restore();
+        return redirect()->route('tasks.index')->with('success', 'Task restored successfully.');
+    }
+
+    public function trash()
+    {
+        $tasks = Task::onlyTrashed()->latest()->paginate(5);
+        return view('tasks', compact('tasks'));
+    }
 }

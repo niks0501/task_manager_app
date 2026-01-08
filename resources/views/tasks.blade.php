@@ -12,23 +12,29 @@
     <div class="mb-4 flex gap-3">
         <a
             href="{{ route('tasks.index') }}"
-            class="{{ request('status') === null ? 'font-bold underline' : '' }}"
+            class="{{ request('status') === null && !request()->routeIs('tasks.trash') ? 'font-bold underline' : '' }}"
         >
             All
         </a>
 
         <a
             href="{{ route('tasks.index', ['status' => 'pending']) }}"
-            class="{{ request('status') === 'pending' ? 'font-bold underline' : '' }}"
+            class="{{ request('status') === 'pending' && !request()->routeIs('tasks.trash') ? 'font-bold underline' : '' }}"
         >
             Pending
         </a>
 
         <a
             href="{{ route('tasks.index', ['status' => 'completed']) }}"
-            class="{{ request('status') === 'completed' ? 'font-bold underline' : '' }}"
+            class="{{ request('status') === 'completed' && !request()->routeIs('tasks.trash') ? 'font-bold underline' : '' }}"
         >
             Completed
+        </a>
+        <a
+            href="{{ route('tasks.trash') }}"
+            class="{{ request()->routeIs('tasks.trash') ? 'font-bold underline' : '' }}"
+        >
+            Trash
         </a>
     </div>
 
@@ -60,13 +66,18 @@
                         Completed
                     </span>
                 @endif
+                @if ($task->deleted_at)
+                    <span class="text-xs bg-red-100 text-red-700 px-2 py-1 rounded">
+                        Deleted
+                    </span>
+                @endif
                 <div class="flex space-x-4">
                     <form action="{{ route('tasks.complete', $task) }}" method="POST">
                         @csrf
                         @method('PATCH')
                         <button
                             type="submit"
-                            class="text-sm text-green-600 hover:underline cursor-pointer"
+                            class="text-sm text-green-600 hover:underline cursor-pointer {{ $task->deleted_at ? 'hidden' : '' }}"
                             {{ $task->is_completed ? 'disabled' : '' }}
                         >
                             Mark complete
@@ -78,7 +89,7 @@
                         @method('GET')
                         <button
                             type="submit"
-                            class="text-sm text-blue-600 hover:underline cursor-pointer"
+                            class="text-sm text-blue-600 hover:underline cursor-pointer {{ $task->deleted_at ? 'hidden' : '' }}"
                         >
                             Edit
                         </button>
@@ -89,11 +100,22 @@
                         @method('DELETE')
                         <button
                             type="submit"
-                            class="text-sm text-red-600 hover:underline cursor-pointer"
+                            class="text-sm text-red-600 hover:underline cursor-pointer {{ $task->deleted_at ? 'hidden' : '' }}"
                         >
                             Delete
                         </button>
                     </form>
+                    <form action="{{ route('tasks.restore', $task) }}" method="POST" onsubmit="return confirm('Are sure you want to restore this task?')">
+                        @csrf
+                        @method('PATCH')
+                        <button
+                            type="submit"
+                            class="text-sm text-red-600 hover:underline cursor-pointer {{ !$task->deleted_at ? 'hidden' : '' }}"
+                        >
+                            Restore
+                        </button>
+                    </form>
+
                 </div>
             </div>
         @empty
