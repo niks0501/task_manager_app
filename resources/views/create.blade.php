@@ -18,7 +18,7 @@
                                value="{{ old('title') }}"
                                class="w-full border rounded px-3 py-2"
                                placeholder="Enter task title"
-                               required>
+                               />
                         @error('title')
                             <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                         @enderror

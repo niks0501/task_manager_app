@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateTaskRequest extends FormRequest
 {
@@ -24,6 +25,12 @@ class UpdateTaskRequest extends FormRequest
         return [
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
+            'is_completed' => 'boolean',
+            'completed_at' => [
+                'nullable',
+                'date',
+                Rule::requiredIf($this->is_completed),
+            ]
         ];
     }
 }

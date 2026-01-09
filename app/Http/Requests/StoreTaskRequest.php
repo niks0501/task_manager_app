@@ -26,4 +26,11 @@ class StoreTaskRequest extends FormRequest
             'description' => 'nullable|string',
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'title.required' => 'Task must have a title.'
+        ];
+    }
 }
