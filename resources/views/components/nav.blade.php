@@ -3,10 +3,13 @@
                 <a href="/" class="font-bold">Task Manager App</a>
                 <div class="spacer grow"></div>
                 <div class="flex justify-between">
-                        <button class="btn bg-blue-900 text-white p-1.5 border 
-                        rounded cursor-pointer hover:scale-105" id="logout-button">
-                        Logout
-                        </button>
+                        <form action="{{ route('logout') }}" method="POST">
+                                @csrf
+                                <button class="btn bg-blue-900 text-white p-1.5 border
+                                rounded cursor-pointer hover:scale-105" id="logout-button">
+                                Logout
+                                </button>
+                        </form>
                 </div>
         </div>
         
