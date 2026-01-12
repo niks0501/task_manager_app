@@ -14,7 +14,7 @@ class TaskController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Task::query();
+        $query = $request->user()->tasks();
 
         match ($request->status) {
             'completed' => $query->completed(),
@@ -40,9 +40,7 @@ class TaskController extends Controller
      */
     public function store(StoreTaskRequest $request)
     {
-        $validated = $request->validated();
-
-        Task::create($validated);
+        $request->user()->tasks()->create($request->validated());
 
         return redirect()->route('tasks.index')->with('success', 'Task created successfully.');
     }
@@ -58,8 +56,9 @@ class TaskController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Task $task)
+    public function edit(Request $request, Task $task)
     {
+        $task = $request->user()->tasks()->findOrFail($task->id);
         return view('edit', compact('task'));
     }
 
@@ -68,6 +67,8 @@ class TaskController extends Controller
      */
     public function update(UpdateTaskRequest $request, Task $task)
     {
+        // Only find the task if it belongs to the logged-in user
+        $task = $request->user()->tasks()->findOrFail($task->id);
         $validated = $request->validated();
 
         if ($request->boolean('is_completed')) {
@@ -82,14 +83,16 @@ class TaskController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Task $task)
+    public function destroy(Request $request, Task $task)
     {
+        $task = $request->user()->tasks()->findOrFail($task->id);
         $task->delete();
         return redirect()->route('tasks.index')->with('success', 'Task deleted successfully.');
     }
 
-    public function complete(Task $task)
+    public function complete(Request $request, Task $task)
     {
+        $task = $request->user()->tasks()->findOrFail($task->id);
         $task->update([
             'is_completed' => true,
             'completed_at' => now(),
@@ -104,9 +107,9 @@ class TaskController extends Controller
         return redirect()->route('tasks.index')->with('success', 'Task restored successfully.');
     }
 
-    public function trash()
+    public function trash(Request $request)
     {
-        $tasks = Task::onlyTrashed()->latest()->paginate(5);
+        $tasks = $request->user()->tasks()->onlyTrashed()->latest()->paginate(5);
         return view('tasks', compact('tasks'));
     }
 }

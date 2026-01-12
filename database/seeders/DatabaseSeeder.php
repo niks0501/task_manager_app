@@ -18,10 +18,13 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
         $password = 'nikko';
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-            'password' => bcrypt($password),
-        ]);
+        //create 5 users
+        User::factory()
+            ->count(5)
+            ->create()
+            ->each(function ($user) use ($password) {
+                $user->password = bcrypt($password);
+                $user->save();
+            });
     }
 }
