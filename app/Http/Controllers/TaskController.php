@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Task;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
+use Illuminate\Auth\Access\Gate;
 use Illuminate\Http\Request;
 
 class TaskController extends Controller
@@ -58,7 +59,7 @@ class TaskController extends Controller
      */
     public function edit(Request $request, Task $task)
     {
-        $task = $request->user()->tasks()->findOrFail($task->id);
+        $this->authorize('view', $task);
         return view('edit', compact('task'));
     }
 
@@ -68,6 +69,7 @@ class TaskController extends Controller
     public function update(UpdateTaskRequest $request, Task $task)
     {
         // Only find the task if it belongs to the logged-in user
+        $this->authorize('update', $task);
         $task = $request->user()->tasks()->findOrFail($task->id);
         $validated = $request->validated();
 
@@ -85,6 +87,7 @@ class TaskController extends Controller
      */
     public function destroy(Request $request, Task $task)
     {
+        $this->authorize('delete', $task);
         $task = $request->user()->tasks()->findOrFail($task->id);
         $task->delete();
         return redirect()->route('tasks.index')->with('success', 'Task deleted successfully.');
